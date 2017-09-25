@@ -1,0 +1,62 @@
+extends layout.pug
+
+block content
+  .page-header
+    h1.text-center Copy a website
+
+  form.form-horizontal(method='POST', action='', enctype='multipart/form-data')
+    input(name='_csrf', type='hidden', value=_csrf)
+    h2.text-center Dev environment settings
+    hr
+    h4 Basic Settings (Not Working)
+    hr
+    //- .form-group
+    //-   label.col-sm-2.control-label(for='templateWebName') Template Web Name
+    //-   .col-sm-8
+    //-     input.form-control(id='templateWebName', name='templateWebName', type='text', value=(undefined===templateWebName ? '' : templateWebName))
+    .form-group
+      label.col-sm-2.control-label(for='templateWebName') Template Web Name
+      .col-sm-8
+        select.form-control(id='templateWebName', name='templateWebName')
+          - for (var i=0; i<ngWeb.templateWebNames.length; i++) {
+            option(selected=(ngWeb.templateWebNames[i] === 'Crown' ? true : false)) #{ngWeb.templateWebNames[i]}
+          - }
+    .form-group
+      label.col-sm-2.control-label(for='newWebName') New Web Name
+      .col-sm-8
+        input.form-control(id='newWebName', name='newWebName', type='text', value=(undefined===ngWeb.newWebName ? '' : ngWeb.newWebName))
+    .form-group
+      label.col-sm-2.control-label(for='favicon') Favicon
+      .col-sm-8
+        input(id='favicon', name='favicon', type='file', value=(test))
+    .form-group
+      label.col-sm-2.control-label(for='webLogo') Web Logo
+      .col-sm-8
+        input(id='webLogo', name='webLogo', type='file', value=(test))
+    .form-group
+      label.col-sm-2.control-label(for='portNO') Port NO
+      .col-sm-8
+        input.form-control(id='portNO', name='portNO', type='text', value=(undefined===ngWeb.portNO ? '' : ngWeb.portNO))
+    .form-group
+      label.col-sm-2.control-label(for='resetPassEmail') Reset PassWord Email
+      .col-sm-8
+        input.form-control(id='resetPassEmail', name='resetPassEmail', type='text', value=(undefined===ngWeb.resetPassEmail ? 'no-reply@surgacentral.com' : ngWeb.resetPassEmail))
+
+    h4 DataBase Settings (Not Working)
+    hr
+    .form-group
+      label.col-sm-2.control-label(for='templateWebName') Name
+      .col-sm-8
+        input.form-control(id='databaseName', name='databaseName', type='text', value=(undefined===ngWeb.database.databaseName ? '' : ngWeb.database.databaseName))
+    .form-group
+      label.col-sm-2.control-label(for='databaseUsername') Username
+      .col-sm-8
+        input.form-control(id='databaseUsername', name='databaseUsername', type='text', value=(undefined===ngWeb.database.databaseUsername ? '' : ngWeb.database.databaseUsername))
+    .form-group
+      label.col-sm-2.control-label(for='templateWebName') Password
+      .col-sm-8
+        input.form-control(id='databasePassword', name='databasePassword', type='text', value=(undefined===ngWeb.database.databasePassword ? '' : ngWeb.database.databasePassword))
+
+    .form-group
+      .col-sm-offset-2.col-sm-8
+        button.btn.btn-primary(type='submit') Copy Website

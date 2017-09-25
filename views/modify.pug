@@ -1,0 +1,659 @@
+extends layout
+
+block content
+  include partials/colorOptions.pug
+  include partials/checkBox.pug
+  include partials/input.pug
+  .page-header
+    h1.text-center Modify the website
+
+  h2.text-center Choose the website that you want to modify
+  .row
+    .col-md-12
+      select.form-control(id='chooseCompanyName')
+        - for (var i=0; i<ngWeb.templateWebNames.length; i++) {
+          option(selected=(ngWeb.templateWebNames[i] === companyName ? true : false)) #{ngWeb.templateWebNames[i]}
+        - }
+
+  form.form-horizontal(method='POST', id='modifyForm')
+    input(name='_csrf', type='hidden', value=_csrf)
+    h2.text-center Blob settings
+    h4 Blob Settings
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='blobAddress') Address
+      .col-sm-8
+        input.form-control(id='blobAddress', name='blobAddress', type='text', value=(undefined===ngWeb.blob.blobAddress ? '' : ngWeb.blob.blobAddress))
+    .form-group
+      label.col-sm-4.control-label(for='blobAccountKey') AccountKey
+      .col-sm-8
+        input.form-control(id='blobAccountKey', name='blobAccountKey', type='text', value=(undefined===ngWeb.blob.blobAccountKey ? '' : ngWeb.blob.blobAccountKey))
+
+    h2.text-center Global Settings
+    h4 Color settings
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='darkColor1') darkColor1
+      .col-sm-8
+        input.form-control(id='darkColor1', name='darkColor1', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.darkColor1 ? '' : ngWeb.styleSettings.colorSettings.darkColor1))
+    .form-group
+      label.col-sm-4.control-label(for='darkColor2') darkColor2
+      .col-sm-8
+        input.form-control(id='darkColor2', name='darkColor2', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.darkColor2 ? '' : ngWeb.styleSettings.colorSettings.darkColor2))
+    .form-group
+      label.col-sm-4.control-label(for='darkColor3') darkColor3
+      .col-sm-8
+        input.form-control(id='darkColor3', name='darkColor3', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.darkColor3 ? '' : ngWeb.styleSettings.colorSettings.darkColor3))
+    .form-group
+      label.col-sm-4.control-label(for='lightColor1') lightColor1
+      .col-sm-8
+        input.form-control(id='lightColor1', name='lightColor1', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.lightColor1 ? '' : ngWeb.styleSettings.colorSettings.lightColor1))
+    .form-group
+      label.col-sm-4.control-label(for='lightColor2') lightColor2
+      .col-sm-8
+        input.form-control(id='lightColor2', name='lightColor2', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.lightColor2 ? '' : ngWeb.styleSettings.colorSettings.lightColor2))
+    .form-group
+      label.col-sm-4.control-label(for='lightColor3') lightColor3
+      .col-sm-8
+        input.form-control(id='lightColor3', name='lightColor3', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.lightColor3 ? '' : ngWeb.styleSettings.colorSettings.lightColor3))
+    .form-group
+      label.col-sm-4.control-label(for='globalHoverColor1') globalHoverColor1
+      .col-sm-8
+        input.form-control(id='globalHoverColor1', name='globalHoverColor1', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.globalHoverColor1 ? '' : ngWeb.styleSettings.colorSettings.globalHoverColor1))
+    .form-group
+      label.col-sm-4.control-label(for='globalHoverColor2') globalHoverColor2
+      .col-sm-8
+        input.form-control(id='globalHoverColor2', name='globalHoverColor2', type='text', value=(undefined===ngWeb.styleSettings.colorSettings.globalHoverColor2 ? '' : ngWeb.styleSettings.colorSettings.globalHoverColor2))
+
+    h4 Others settings
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='globalTextShadow1') globalTextShadow1 (Not Working)
+      .col-sm-8
+        input.form-control(id='globalTextShadow1', name='globalTextShadow1', type='text', value=(undefined===ngWeb.styleSettings.otherSettings.globalTextShadow1 ? '' : ngWeb.styleSettings.otherSettings.globalTextShadow1))
+
+    h2.text-center 4 Themes
+
+    h4 themes settings
+    hr
+
+    table.table.table-bordered
+      thead
+        tr
+          th
+          th Theme 1 (White theme)
+          th Theme 2
+          th Theme 3
+          th Theme 4
+
+      tbody
+        tr
+          th Theme Background Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1BgColor', name='theme1BgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.bgColor.theme1BgColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2BgColor', name='theme2BgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.bgColor.theme2BgColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3BgColor', name='theme3BgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.bgColor.theme3BgColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4BgColor', name='theme4BgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.bgColor.theme4BgColor)
+
+        tr
+          th Theme Background Gradient
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.bgGradient.theme1BgGradient, 'theme1BgGradient')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.bgGradient.theme2BgGradient, 'theme2BgGradient')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.bgGradient.theme3BgGradient, 'theme3BgGradient')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.bgGradient.theme4BgGradient, 'theme4BgGradient')
+
+        tr
+          th 
+            p Theme Background Gradient Details 
+            p (Set to "true" to use default gradient)
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.bgGradientDetails.theme1BgGradientDetails, 'theme1BgGradientDetails')
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.bgGradientDetails.theme2BgGradientDetails, 'theme2BgGradientDetails')
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.bgGradientDetails.theme3BgGradientDetails, 'theme3BgGradientDetails')
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.bgGradientDetails.theme4BgGradientDetails, 'theme4BgGradientDetails')
+
+        tr
+          th H1 Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1H1TextColor', name='theme1H1TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h1TextColor.theme1H1TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2H1TextColor', name='theme2H1TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h1TextColor.theme2H1TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3H1TextColor', name='theme3H1TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h1TextColor.theme3H1TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4H1TextColor', name='theme4H1TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h1TextColor.theme4H1TextColor)
+
+        tr
+          th H2 Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1H2TextColor', name='theme1H2TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h2TextColor.theme1H2TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2H2TextColor', name='theme2H2TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h2TextColor.theme2H2TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3H2TextColor', name='theme3H2TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h2TextColor.theme3H2TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4H2TextColor', name='theme4H2TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h2TextColor.theme4H2TextColor)
+
+        tr
+          th H3 Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1H3TextColor', name='theme1H3TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h3TextColor.theme1H3TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2H3TextColor', name='theme2H3TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h3TextColor.theme2H3TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3H3TextColor', name='theme3H3TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h3TextColor.theme3H3TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4H3TextColor', name='theme4H3TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h3TextColor.theme4H3TextColor)
+
+        tr
+          th H4 Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1H4TextColor', name='theme1H4TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h4TextColor.theme1H4TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2H4TextColor', name='theme2H4TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h4TextColor.theme2H4TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3H4TextColor', name='theme3H4TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h4TextColor.theme3H4TextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4H4TextColor', name='theme4H4TextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.h4TextColor.theme4H4TextColor)
+
+        tr
+          th Body Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1PTextColor', name='theme1PTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.pTextColor.theme1PTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2PTextColor', name='theme2PTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.pTextColor.theme2PTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3PTextColor', name='theme3PTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.pTextColor.theme3PTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4PTextColor', name='theme4PTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.pTextColor.theme4PTextColor)
+
+        tr
+          th Hyperlink text Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1HyperlinkTextColor', name='theme1HyperlinkTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkTextColor.theme1HyperlinkTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2HyperlinkTextColor', name='theme2HyperlinkTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkTextColor.theme2HyperlinkTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3HyperlinkTextColor', name='theme3HyperlinkTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkTextColor.theme3HyperlinkTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4HyperlinkTextColor', name='theme4HyperlinkTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkTextColor.theme4HyperlinkTextColor)
+
+        tr
+          th Hyperlink text hover Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1HyperlinkHoverColor', name='theme1HyperlinkHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkHoverColor.theme1HyperlinkHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2HyperlinkHoverColor', name='theme2HyperlinkHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkHoverColor.theme2HyperlinkHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3HyperlinkHoverColor', name='theme3HyperlinkHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkHoverColor.theme3HyperlinkHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4HyperlinkHoverColor', name='theme4HyperlinkHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.hyperLinkHoverColor.theme4HyperlinkHoverColor)
+
+        tr
+          th Icon text Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1IconTextColor', name='theme1IconTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.IconTextColor.theme1IconTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2IconTextColor', name='theme2IconTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.IconTextColor.theme2IconTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3IconTextColor', name='theme3IconTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.IconTextColor.theme3IconTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4IconTextColor', name='theme4IconTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.IconTextColor.theme4IconTextColor)
+
+        tr
+          th Button text Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1ButtonTextColor', name='theme1ButtonTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextColor.theme1ButtonTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2ButtonTextColor', name='theme2ButtonTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextColor.theme2ButtonTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3ButtonTextColor', name='theme3ButtonTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextColor.theme3ButtonTextColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4ButtonTextColor', name='theme4ButtonTextColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextColor.theme4ButtonTextColor)
+
+        tr
+          th Button text hover Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1ButtonTextHoverColor', name='theme1ButtonTextHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextHoverColor.theme1ButtonTextHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2ButtonTextHoverColor', name='theme2ButtonTextHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextHoverColor.theme2ButtonTextHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3ButtonTextHoverColor', name='theme3ButtonTextHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextHoverColor.theme3ButtonTextHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4ButtonTextHoverColor', name='theme4ButtonTextHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonTextHoverColor.theme4ButtonTextHoverColor)
+
+        tr
+          th Button background Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1ButtonBgColor', name='theme1ButtonBgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgColor.theme1ButtonBgColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2ButtonBgColor', name='theme2ButtonBgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgColor.theme2ButtonBgColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3ButtonBgColor', name='theme3ButtonBgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgColor.theme3ButtonBgColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4ButtonBgColor', name='theme4ButtonBgColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgColor.theme4ButtonBgColor)
+
+        tr
+          th Button background Gradient
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonBgGradient.theme1ButtonBgGradient, 'theme1ButtonBgGradient')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonBgGradient.theme2ButtonBgGradient, 'theme2ButtonBgGradient')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonBgGradient.theme3ButtonBgGradient, 'theme3ButtonBgGradient')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonBgGradient.theme4ButtonBgGradient, 'theme4ButtonBgGradient')
+
+        tr
+          th 
+            p Button background Gradient Details 
+            p (Set to "true" to use default gradient)
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.buttonBgGradientDetails.theme1ButtonBgGradientDetails, 'theme1ButtonBgGradientDetails')
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.buttonBgGradientDetails.theme2ButtonBgGradientDetails, 'theme2ButtonBgGradientDetails')
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.buttonBgGradientDetails.theme3ButtonBgGradientDetails, 'theme3ButtonBgGradientDetails')
+          th
+            .form-group
+              .col-sm-12
+                +input(ngWeb.styleSettings.themeSettings.buttonBgGradientDetails.theme4ButtonBgGradientDetails, 'theme4ButtonBgGradientDetails')
+
+        tr
+          th Button background hover Color
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme1ButtonBgHoverColor', name='theme1ButtonBgHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgHoverColor.theme1ButtonBgHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme2ButtonBgHoverColor', name='theme2ButtonBgHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgHoverColor.theme2ButtonBgHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme3ButtonBgHoverColor', name='theme3ButtonBgHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgHoverColor.theme3ButtonBgHoverColor)
+          th
+            .form-group
+              .col-sm-12
+                select.form-control(id='theme4ButtonBgHoverColor', name='theme4ButtonBgHoverColor')
+                  +colorOptions(ngWeb.styleSettings.themeSettings.buttonBgHoverColor.theme4ButtonBgHoverColor)
+
+        tr
+          th 3D button
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonIs3D.theme1ButtonIs3D, 'theme1ButtonIs3D')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonIs3D.theme2ButtonIs3D, 'theme2ButtonIs3D')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonIs3D.theme3ButtonIs3D, 'theme3ButtonIs3D')
+          th
+            .form-group
+              .col-sm-12
+                +checkBox(ngWeb.styleSettings.themeSettings.buttonIs3D.theme4ButtonIs3D, 'theme4ButtonIs3D')
+
+    h2.text-center Header
+
+    h4 Header Background
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='navBackgroundColor') Header background color
+      .col-sm-8
+        select.form-control(id='navBackgroundColor', name='navBackgroundColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.haderBackground.navBackgroundColor)
+
+    h4 Top Header
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='navContactFontColor') Header contact text color
+      .col-sm-8
+        select.form-control(id='navContactFontColor', name='navContactFontColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navContactFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='navContactFontHoverColor') Header contact text hovering color
+      .col-sm-8
+        select.form-control(id='navContactFontHoverColor', name='navContactFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navContactFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navContactIconColor') Header contact icon color
+      .col-sm-8
+        select.form-control(id='navContactIconColor', name='navContactIconColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navContactIconColor)
+    .form-group
+      label.col-sm-4.control-label(for='navContactIconHoverColor') Header contact icon hovering color
+      .col-sm-8
+        select.form-control(id='navContactIconHoverColor', name='navContactIconHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navContactIconHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navWatchlistFontColor') Header watchlist text color
+      .col-sm-8
+        select.form-control(id='navWatchlistFontColor', name='navWatchlistFontColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navWatchlistFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='navWatchlistFontHoverColor') Header watchlist text hovering color
+      .col-sm-8
+        select.form-control(id='navWatchlistFontHoverColor', name='navWatchlistFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navWatchlistFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navWatchlistIconColor') Header watchlist icon color
+      .col-sm-8
+        select.form-control(id='navWatchlistIconColor', name='navWatchlistIconColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navWatchlistIconColor)
+    .form-group
+      label.col-sm-4.control-label(for='navWatchlistIconHoverColor') Header watchlist icon hovering color
+      .col-sm-8
+        select.form-control(id='navWatchlistIconHoverColor', name='navWatchlistIconHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.topHeader.navWatchlistIconHoverColor)
+
+    h4 Bottom Header
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='navFontColor') First level nav text color
+      .col-sm-8
+        select.form-control(id='navFontColor', name='navFontColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='navFontHoverColor') First level nav text hovering color
+      .col-sm-8
+        select.form-control(id='navFontHoverColor', name='navFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navSecondFontColor') Second level nav text color
+      .col-sm-8
+        select.form-control(id='navSecondFontColor', name='navSecondFontColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navSecondFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='navSecondFontHoverColor') Second level nav text hovering color
+      .col-sm-8
+        select.form-control(id='navSecondFontHoverColor', name='navSecondFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navSecondFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navMobileFontColor') First level nav text color(mobile)
+      .col-sm-8
+        select.form-control(id='navMobileFontColor', name='navMobileFontColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navMobileFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='navMobileFontHoverColor') First level nav text hovering color(mobile)
+      .col-sm-8
+        select.form-control(id='navMobileFontHoverColor', name='navMobileFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navMobileFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navMobileSecondFontColor') Second level nav text color(mobile)
+      .col-sm-8
+        select.form-control(id='navMobileSecondFontColor', name='navMobileSecondFontColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navMobileSecondFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='navMobileSecondFontHoverColor') Second level nav text hovering color(mobile)
+      .col-sm-8
+        select.form-control(id='navMobileSecondFontHoverColor', name='navMobileSecondFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navMobileSecondFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='navToogleButtonColor') Mobile nav toggle button color
+      .col-sm-8
+        select.form-control(id='navToogleButtonColor', name='navToogleButtonColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navToogleButtonColor)
+
+    h2.text-center Footer
+
+    h4 Footer Background
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='footerBgColor') Whole footer background color
+      .col-sm-8
+        select.form-control(id='footerBgColor', name='footerBgColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerBackground.footerBgColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerMianBackGroundColor') Main footer background color
+      .col-sm-8
+        select.form-control(id='footerMianBackGroundColor', name='footerMianBackGroundColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerBackground.footerMianBackGroundColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerMainBottomDividerColor') Main - bottom footer divider
+      .col-sm-8
+        select.form-control(id='footerMainBottomDividerColor', name='footerMainBottomDividerColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerBackground.footerMainBottomDividerColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerBottomBackgroundColor') Bottom footer background color
+      .col-sm-8
+        select.form-control(id='footerBottomBackgroundColor', name='footerBottomBackgroundColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerBackground.footerBottomBackgroundColor)
+
+    h4 Footer Color
+    hr
+    .form-group
+      label.col-sm-4.control-label(for='footerFontColor') Footer text color
+      .col-sm-8
+        select.form-control(id='footerFontColor', name='footerFontColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerFontColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerFontHoverColor') Footer text hovering color
+      .col-sm-8
+        select.form-control(id='footerFontHoverColor', name='footerFontHoverColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerFontHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerIconColor') Footer icon color
+      .col-sm-8
+        select.form-control(id='footerIconColor', name='footerIconColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerIconColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerIconHoverColor') Footer icon hovering color
+      .col-sm-8
+        select.form-control(id='footerIconHoverColor', name='footerIconHoverColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerIconHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerRoundIconColor') Footer round icon text color
+      .col-sm-8
+        select.form-control(id='footerRoundIconColor', name='footerRoundIconColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerRoundIconBgColor') Footer round icon background color
+      .col-sm-8
+        select.form-control(id='footerRoundIconBgColor', name='footerRoundIconBgColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerRoundIconHoverColor') Footer round icon text hovering color
+      .col-sm-8
+        select.form-control(id='footerRoundIconHoverColor', name='footerRoundIconHoverColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerRoundIconBgHoverColor') Footer round icon background hovering color
+      .col-sm-8
+        select.form-control(id='footerRoundIconBgHoverColor', name='footerRoundIconBgHoverColor')
+          +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgHoverColor)
+
+    .form-group
+      .col-sm-8
+        button.btn.btn-primary(type='submit') Confirm the changes

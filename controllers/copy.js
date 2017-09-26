@@ -28,7 +28,8 @@ exports.getCopy = (req, res) => {
     }, this);
 
     const ngWeb = new NgWeb({
-      templateWebNames
+      templateWebNames,
+      templateWebName: 'Crown'
     });
 
     res.render('copy', {
@@ -88,6 +89,8 @@ exports.postCopy = (req, res) => {
       templateWebNames,
       templateWebName: req.body.templateWebName,
       newWebName: req.body.newWebName,
+      templateDbName: req.body.templateDbName,
+      newDbName: req.body.newDbName,
       portNO: req.body.portNO,
       resetPassEmail: req.body.resetPassEmail,
       database: {
@@ -110,9 +113,10 @@ exports.postCopy = (req, res) => {
       log.warn('Copying folder...');
       const filterFunc = (src, dest) => {
         if (src.indexOf('node_modules') === -1) {
-          if (src.indexOf('umbraco') === -1 && src.indexOf('umbraco_client') === -1) {
-            return true;
-          }
+          // if (src.indexOf('umbraco') === -1 && src.indexOf('umbraco_client') === -1) {
+          //   return true;
+          // }
+          return true;
         }
       };
       fse.copySync(templateWebFolder, NewWebFolder, {
@@ -254,25 +258,14 @@ exports.postCopy = (req, res) => {
       });
 
       // 11. Change email address
-      fs.readFile(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, (err, data) => {
-        if (err) {
-          throw err;
-        }
-
-        const $Web = cheerio.load(data, {
-          xmlMode: true,
-          decodeEntities: false
-        });
-        console.log($Web('mailSettings smtp').attr('from'));
-        $Web('mailSettings smtp').attr('from', ngWeb.resetPassEmail)
-
-        fs.writeFile(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, $Web.html(), (err) => {
-          if (err) {
-            throw err;
-          }
-          log.success('11 Change email address');
-        });
+      let webConfig = fs.readFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`);
+      let $Web = cheerio.load(webConfig, {
+        xmlMode: true,
+        decodeEntities: false
       });
+      $Web('mailSettings smtp').attr('from', ngWeb.resetPassEmail);
+      fs.writeFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, $Web.html());
+      log.success('11 Change email address');
 
       // 12. Edit .compilerconfig.json
       fs.readFile(`${NewWebFolder}/${ngWeb.newWebName}/compilerconfig.json`, 'utf8', (err, data) => {
@@ -283,6 +276,54 @@ exports.postCopy = (req, res) => {
           log.success('12 Edit .compilerconfig.json');
         });
       });
+
+      // 13. Setup database
+      // 13.1 Backup & Copy database
+      const dbConfig = {
+        server: 'MAX2',
+        user: 'admin',
+        password: 'admin'
+      };
+
+      const sqlConn = new sql.ConnectionPool(dbConfig);
+      const sqlReq = new sql.Request(sqlConn);
+
+      sqlConn.connect((err) => {
+        if (err) {
+          log.error(err);
+          return;
+        }
+        sqlReq.query(`
+          BACKUP DATABASE ${ngWeb.templateDbName} TO DISK = 'C:\\Temp\\${ngWeb.templateDbName}.BAK'
+        `, (err, recordset) => {
+          if (err) {
+            log.error(err);
+          } else {
+            log.success(`13.1.1 Backup database: ${ngWeb.templateDbName}`);
+            sqlReq.query(`
+              USE [master]
+              RESTORE DATABASE [${ngWeb.newDbName}] FROM  DISK = N'C:\\Temp\\${ngWeb.templateDbName}.BAK' WITH  FILE = 1,  MOVE N'${ngWeb.templateDbName}_Data' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.mdf',  MOVE N'${ngWeb.templateDbName}_Log' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.ldf',  NOUNLOAD,  STATS = 5      
+            `, (err, recordset) => {
+              if (err) {
+                log.error(err);
+              } else {
+                log.success(`13.1.2 Create new database: ${ngWeb.templateDbName}`);
+              }
+              sqlConn.close();
+            });
+          }
+        });
+      });
+      // 13.2 Change web.config
+      webConfig = fs.readFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`);
+      $Web = cheerio.load(webConfig, {
+        xmlMode: true,
+        decodeEntities: false
+      });
+      console.log($Web('connectionStrings add[name="umbracoDbDSN"]').attr('connectionString'));
+      console.log($Web('connectionStrings add[name="umbracoDbDSN"]').attr('connectionString', `server=MAX2;database=${ngWeb.newDbName};user id=umbraco;password=umbraco`));
+      fs.writeFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, $Web.html());
+      log.success('13.2 Edit Web.config with new dataBase settings');
     }
 
 

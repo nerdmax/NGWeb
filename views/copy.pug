@@ -8,7 +8,7 @@ block content
     input(name='_csrf', type='hidden', value=_csrf)
     h2.text-center Dev environment settings
     hr
-    h4 Basic Settings (Not Working)
+    h4 Basic Settings
     hr
     //- .form-group
     //-   label.col-sm-2.control-label(for='templateWebName') Template Web Name
@@ -19,7 +19,7 @@ block content
       .col-sm-8
         select.form-control(id='templateWebName', name='templateWebName')
           - for (var i=0; i<ngWeb.templateWebNames.length; i++) {
-            option(selected=(ngWeb.templateWebNames[i] === 'Crown' ? true : false)) #{ngWeb.templateWebNames[i]}
+            option(selected=(ngWeb.templateWebNames[i] === ngWeb.templateWebName ? true : false)) #{ngWeb.templateWebNames[i]}
           - }
     .form-group
       label.col-sm-2.control-label(for='newWebName') New Web Name
@@ -42,20 +42,16 @@ block content
       .col-sm-8
         input.form-control(id='resetPassEmail', name='resetPassEmail', type='text', value=(undefined===ngWeb.resetPassEmail ? 'no-reply@surgacentral.com' : ngWeb.resetPassEmail))
 
-    h4 DataBase Settings (Not Working)
+    h4 DataBase Settings
     hr
     .form-group
-      label.col-sm-2.control-label(for='templateWebName') Name
+      label.col-sm-2.control-label(for='templateDbName') Template database name
       .col-sm-8
-        input.form-control(id='databaseName', name='databaseName', type='text', value=(undefined===ngWeb.database.databaseName ? '' : ngWeb.database.databaseName))
+        input.form-control(id='templateDbName', name='templateDbName', type='text', value=(undefined===ngWeb.templateDbName ? ngWeb.templateWebName + '_CMS' : ngWeb.templateDbName))
     .form-group
-      label.col-sm-2.control-label(for='databaseUsername') Username
+      label.col-sm-2.control-label(for='newDbName') New database name
       .col-sm-8
-        input.form-control(id='databaseUsername', name='databaseUsername', type='text', value=(undefined===ngWeb.database.databaseUsername ? '' : ngWeb.database.databaseUsername))
-    .form-group
-      label.col-sm-2.control-label(for='templateWebName') Password
-      .col-sm-8
-        input.form-control(id='databasePassword', name='databasePassword', type='text', value=(undefined===ngWeb.database.databasePassword ? '' : ngWeb.database.databasePassword))
+        input.form-control(id='newDbName', name='newDbName', type='text', value=(undefined===ngWeb.newDbName ? '' : ngWeb.newDbName))
 
     .form-group
       .col-sm-offset-2.col-sm-8

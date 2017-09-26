@@ -28,10 +28,9 @@ exports.getTest = (req, res) => {
   log.debug('DLKJLFJ');
 
   const dbConfig = {
-    server: 'MAX',
-    database: 'Vokins_CMS',
-    user: 'umbraco',
-    password: 'umbraco'
+    server: 'MAX2',
+    user: 'admin',
+    password: 'admin'
   };
 
   function getEmp() {
@@ -43,8 +42,21 @@ exports.getTest = (req, res) => {
         log.error(err);
         return;
       }
+      // req.query(`
+      // BACKUP DATABASE Crown_CMS TO DISK = 'C:\\Temp\\Crown_CMS.BAK'
+      // `, (err, recordset) => {
+      //   if (err) {
+      //     log.error(err);
+      //   } else {
+      //     log.debug(recordset);
+      //     console.log(recordset);
+      //   }
+      //   conn.close();
+      // });
+
       req.query(`
-      BACKUP DATABASE Vokins_CMS TO DISK = 'C:\\Temp\\Vokins_CMS.BAK'
+      USE [master]
+      RESTORE DATABASE [TEST_CMS] FROM  DISK = N'C:\\temp\\Crown_CMS.BAK' WITH  FILE = 1,  MOVE N'Crown_CMS_Data' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\TEST_CMS.mdf',  MOVE N'Crown_CMS_Log' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\TEST_CMS.ldf',  NOUNLOAD,  STATS = 5      
       `, (err, recordset) => {
         if (err) {
           log.error(err);

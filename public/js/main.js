@@ -1,7 +1,25 @@
-(function ($, document, window) {
+(function($, document, window) {
   $(document).ready(() => {
-    $('#chooseCompanyName').on('change', function () {
-      const companyName = $(this).val();
+    // Copy Page
+    if ($('html').has('#templateDbName').length) {
+      $('#templateWebName').on('change', function() {
+        $('#templateDbName').val(this.value + '_CMS');
+      });
+      console.log('has olddata');
+    }
+    if ($('html').has('#newDbName').length) {
+      $('#newWebName').on('input', function() {
+        if (this.value) {
+          $('#newDbName').val(this.value + '_CMS');
+        } else {
+          $('#newDbName').val('');
+        }
+      });
+      console.log('has olddata');
+    }
+
+    // Modify Page
+    $('#chooseCompanyName').on('change', function() {
       window.location.href = `?companyName=${encodeURIComponent(this.value)}`;
     });
   });

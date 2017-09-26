@@ -4,6 +4,8 @@ const ngwebSchema = new mongoose.Schema({
   templateWebNames: Array,
   templateWebName: String,
   newWebName: String,
+  templateDbName: String,
+  newDbName: String,
   favicon: String,
   weblogo: String,
   portNO: String,

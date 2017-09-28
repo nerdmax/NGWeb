@@ -208,6 +208,9 @@ app.post('/copy', upload.fields([{
 }, {
   name: 'webLogo',
   maxCount: 1
+}, {
+  name: 'newDbFile',
+  maxCount: 1
 }]), copyController.postCopy);
 app.get('/modify', modifyController.getModify);
 app.post('/modify', modifyController.postModify);

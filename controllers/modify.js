@@ -188,6 +188,28 @@ function changeBlobSettings(ngWeb, req) {
     accountname: ngWeb.blob.blobAddress.replace('https://', '').replace('.blob.core.windows.net/', ''),
     accountkey: ngWeb.blob.blobAccountKey
   };
+  // .BlobSettings
+  fs.readFile(`${rootPath}/${req.query.companyName || companyName}/${req.query.companyName || companyName}.BlobSettings`, (err, data) => {
+    if (err) {
+      throw err;
+    }
+
+    const $blobsettings = cheerio.load(data, {
+      xmlMode: true,
+      decodeEntities: false
+    });
+
+    $blobsettings('blob').attr('blobaddress', blobinfo.blobaddress);
+    $blobsettings('blob').attr('accountkey', blobinfo.accountkey);
+    log.error($blobsettings('blob').attr('accountkey'));
+
+    fs.writeFile(`${rootPath}/${req.query.companyName || companyName}/${req.query.companyName || companyName}.BlobSettings`, $blobsettings.html(), (err) => {
+      if (err) {
+        throw err;
+      }
+      log.warn('.BlobSettings (2 parts) has been changed successfully');
+    });
+  });
   // FileSystemProviders.config
   fs.readFile(`${rootPath}/${req.query.companyName || companyName}/${req.query.companyName || companyName}/Config/FileSystemProviders.config`, (err, data) => {
     if (err) {

@@ -1,16 +1,16 @@
-(function($, document, window) {
+(function ($, document, window) {
   $(document).ready(() => {
     // Copy Page
     if ($('html').has('#templateDbName').length) {
-      $('#templateWebName').on('change', function() {
-        $('#templateDbName').val(this.value + '_CMS');
+      $('#templateWebName').on('change', function () {
+        $('#templateDbName').val(`${this.value}_CMS`);
       });
       console.log('has olddata');
     }
     if ($('html').has('#newDbName').length) {
-      $('#newWebName').on('input', function() {
+      $('#newWebName').on('input', function () {
         if (this.value) {
-          $('#newDbName').val(this.value + '_CMS');
+          $('#newDbName').val(`${this.value}_CMS`);
         } else {
           $('#newDbName').val('');
         }
@@ -18,8 +18,20 @@
       console.log('has olddata');
     }
 
+    $('#newDbFile').on('change', () => {
+      if ($('#newDbFile').val()) {
+        $('#templateDbName').prop('disabled', true);
+      } else {
+        $('#templateDbName').prop('disabled', false);
+      }
+    });
+
+    $('#copyForm').submit(() => {
+      $('#templateDbName').prop('disabled', false);
+    });
+
     // Modify Page
-    $('#chooseCompanyName').on('change', function() {
+    $('#chooseCompanyName').on('change', function () {
       window.location.href = `?companyName=${encodeURIComponent(this.value)}`;
     });
   });

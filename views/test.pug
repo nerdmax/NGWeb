@@ -2,3 +2,60 @@ extends layout
 
 block content
   .page-header
+
+  .container
+    .row
+      .col-md-12
+        p  COPY:
+        ol
+          li  Copy folder
+          li Rename Folder
+          li Rename*.BlobSettings
+          li Delete *.PublishSettings
+          li Rename folder inside folder
+          li Replace favicon.ico, logo
+          li Delete Log files(not folder) inside App_Data -> Logs folder
+          li Delete uatlater, uatbackup folders
+          li Setup IIS, assign port NO.
+          li Change the name, port NO., companyname inside package.json; Delete stagingcompanyname, blobsettingsfilename, publishfilename
+          li Change the Email Address inside Web.config (Search smtp)
+          li
+            ul
+              li For the UK:
+              li no-reply@surgacentral.co.uk
+              li For AU:
+              li no-reply@surgacentral.com
+          li Change .less file's name
+          li Delete bundle.css.min, (Company's name).css, (Company's name).min.css 3 files.
+          li Use VS to open the website, change the .less name inside .compilerconfig.json file ,use VS to compile once
+          li  
+
+          li  Add the new folder to SVN (Need to wait for a long time, and during this period, it seems like nothing happends, but after a while, svn will process the files) (Use this period to creat new database,remember to change security setting)
+            ul
+              li When duplicate the database via backup, remember to Untick Tail-log backup box
+          li Should not do anything, especially not viewing the website or changing the connection string
+          li Commit SVN (*'s initial commit)
+          li Change the connectionString inside Web.config
+          li Untrack node_modules
+          li Untrack logs, TEMP, Models folders inside APP_data
+          li Untrack umbraco.config file inside APP_data
+          li Untrack .css, .min.css files
+          li
+            ul
+              li Company's name (2)
+              li Common (2)
+              li * bundle (1)
+          li Untrack surgajs.js, surgajs-min.js
+          li Commit SVN
+          li Change the company's name in backoffice
+          li
+            ul
+              li * Home (Page SEO tab)
+              li * Settings -> Dictionary -> CompanyName
+          li Change the culture in backoffice (Culture and Hostnames)
+          li
+            ul
+              li * AU: en-AU
+              li * UK: en-GB
+          li Assign new tab name rules (2 local websites, 2 local auto websites )
+          li Add original website, 2 local websites, 2 local auto websites to favourites

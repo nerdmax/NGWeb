@@ -2,10 +2,9 @@ const NgWeb = require('../models/Ngweb');
 const cheerio = require('cheerio');
 // const symbolsParser = require('less-symbols-parser');
 const log = require('pretty-log');
-const path = require('path');
 
 const fs = require('fs');
-const fse = require('fs-extra')
+const fse = require('fs-extra');
 const sharp = require('sharp');
 
 const sql = require('mssql');
@@ -29,12 +28,12 @@ exports.getCopy = (req, res) => {
 
     const ngWeb = new NgWeb({
       templateWebNames,
-      templateWebName: 'Crown'
+      templateWebName: 'Crown',
     });
 
     res.render('copy', {
       title: 'COPY',
-      ngWeb
+      ngWeb,
     });
   });
 };
@@ -50,8 +49,8 @@ exports.postCopy = (req, res) => {
 
   // console.log(req.files.webLogo[0].buffer);
 
-  RegExp.quote = function(str) {
-    return (str + '').replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&");
+  RegExp.quote = function (str) {
+    return `${str}`.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&');
   };
 
   function changeVar(key, oldValue, newValue, data) {
@@ -64,15 +63,47 @@ exports.postCopy = (req, res) => {
     data = changeVar('portNO', packagejson.nextGenConfig.portNO, ngWeb.portNO, data);
     data = changeVar('companyname', packagejson.nextGenConfig.companyname, ngWeb.newWebName, data);
     data = changeVar('stagingcompanyname', packagejson.nextGenConfig.stagingcompanyname, '', data);
-    data = changeVar('blobsettingsfilename', packagejson.nextGenConfig.blobsettingsfilename, ngWeb.newWebName + '.BlobSettings', data);
+    data = changeVar(
+      'blobsettingsfilename',
+      packagejson.nextGenConfig.blobsettingsfilename,
+      `${ngWeb.newWebName}.BlobSettings`,
+      data
+    );
     data = changeVar('publishfilename', packagejson.nextGenConfig.publishfilename, '', data);
     return data;
   }
 
   function changeCompilerconfig(data, ngWeb) {
-    data = changeVar('outputFile', `css/${ngWeb.templateWebName}.css`, `css/${ngWeb.newWebName}.css`, data);
-    data = changeVar('inputFile', `less/${ngWeb.templateWebName}.less`, `less/${ngWeb.newWebName}.less`, data);
+    data = changeVar(
+      'outputFile',
+      `css/${ngWeb.templateWebName}.css`,
+      `css/${ngWeb.newWebName}.css`,
+      data
+    );
+    data = changeVar(
+      'inputFile',
+      `less/${ngWeb.templateWebName}.less`,
+      `less/${ngWeb.newWebName}.less`,
+      data
+    );
     return data;
+  }
+
+  function createNewDb(sqlReq, ngWeb, sqlConn) {
+    sqlReq.query(
+      `
+                USE [master]
+                RESTORE DATABASE [${ngWeb.newDbName}] FROM  DISK = N'C:\\Temp\\${ngWeb.templateDbName}.BAK' WITH  FILE = 1, MOVE N'${ngWeb.templateDbName}_Data' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.mdf', MOVE N'${ngWeb.templateDbName}_Log' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.ldf', NOUNLOAD, STATS = 5
+      `,
+      (err, recordset) => {
+        if (err) {
+          log.error(err);
+        } else {
+          log.success(`13.1.2 Create new database: ${ngWeb.templateDbName}`);
+        }
+        sqlConn.close();
+      }
+    );
   }
 
   fs.readdir(rootPath, (err, files) => {
@@ -96,12 +127,12 @@ exports.postCopy = (req, res) => {
       database: {
         databaseName: req.body.databaseName,
         databaseUsername: req.body.databaseUsername,
-        databasePassword: req.body.databasePassword
+        databasePassword: req.body.databasePassword,
       },
       blob: {
         blobAddress: req.body.blobAddress,
         blobAccountKey: req.body.blobAccountKey,
-      }
+      },
     });
     console.log(ngWeb);
 
@@ -120,13 +151,16 @@ exports.postCopy = (req, res) => {
         }
       };
       fse.copySync(templateWebFolder, NewWebFolder, {
-        filter: filterFunc
+        filter: filterFunc,
       });
       log.success('1 Copy folder');
 
       // 2. Rename Folder
       if (fs.existsSync(`${NewWebFolder}/${ngWeb.templateWebName}`)) {
-        fs.renameSync(`${NewWebFolder}/${ngWeb.templateWebName}`, `${NewWebFolder}/${ngWeb.newWebName}`);
+        fs.renameSync(
+          `${NewWebFolder}/${ngWeb.templateWebName}`,
+          `${NewWebFolder}/${ngWeb.newWebName}`
+        );
         log.success('2 Rename Folder');
       }
 
@@ -144,7 +178,7 @@ exports.postCopy = (req, res) => {
         fse.removeSync(publishSettingsFilePath);
         log.success('4 Remove *.PublishSettings');
       } else {
-        log.success('4 Cann\'t find *.PublishSettings');
+        log.success("4 Cann't find *.PublishSettings");
       }
 
       // 5. Empty Log folder inside App_Data
@@ -159,13 +193,13 @@ exports.postCopy = (req, res) => {
         fse.removeSync(uatlaterFolderPath);
         log.success('6.1 Delete uatlater folder');
       } else {
-        log.success('6.1 Cann\'t find uatlater folder');
+        log.success("6.1 Cann't find uatlater folder");
       }
       if (fs.existsSync(uatbackupFolderPath)) {
         fse.removeSync(uatbackupFolderPath);
         log.success('6.2 Delete uatback folder');
       } else {
-        log.success('6.2 Cann\'t find uatback folder');
+        log.success("6.2 Cann't find uatback folder");
       }
 
       // 7. Change .less file's name
@@ -173,7 +207,7 @@ exports.postCopy = (req, res) => {
       const lessFilePathNew = `${NewWebFolder}/${ngWeb.newWebName}/less/${ngWeb.newWebName}.less`;
       if (fs.existsSync(lessFilePathOld)) {
         fs.renameSync(lessFilePathOld, lessFilePathNew);
-        log.success('7 Change .less file\'s name');
+        log.success("7 Change .less file's name");
       }
 
       // 8. Delete bundle.min.css, (Company's name).css, (Company's name).min.css 3 files.
@@ -186,18 +220,22 @@ exports.postCopy = (req, res) => {
       }
       if (fs.existsSync(companycssFilePath)) {
         fse.removeSync(companycssFilePath);
-        log.success('8.2 Delete (Company\'s name).css');
+        log.success("8.2 Delete (Company's name).css");
       }
       if (fs.existsSync(companycssminFIlePath)) {
         fse.removeSync(companycssminFIlePath);
-        log.success('8.3 Delete (Company\'s name).min.css');
+        log.success("8.3 Delete (Company's name).min.css");
       }
 
       // 9. Replace favicon.ico, logo
       // favicon.ico
       if (req.files.favicon) {
         const faviconBuffer = req.files.favicon[0].buffer;
-        fs.writeFileSync(`${NewWebFolder}/${ngWeb.newWebName}/favicon.ico`, faviconBuffer, 'binary');
+        fs.writeFileSync(
+          `${NewWebFolder}/${ngWeb.newWebName}/favicon.ico`,
+          faviconBuffer,
+          'binary'
+        );
         log.success('9.1 Replace favicon.ico');
       }
       // logo
@@ -239,11 +277,9 @@ exports.postCopy = (req, res) => {
             .toFile(`${NewWebFolder}/${ngWeb.newWebName}/images/logo/logo${suffix}.png`);
         };
 
-        Promise
-          .all([60, 120, 30, 60, 60, 120, 40, 80].map(resize))
-          .then(() => {
-            log.success('9.2 Replace logo');
-          });
+        Promise.all([60, 120, 30, 60, 60, 120, 40, 80].map(resize)).then(() => {
+          log.success('9.2 Replace logo');
+        });
       }
 
       // 10. Change package.json
@@ -261,28 +297,37 @@ exports.postCopy = (req, res) => {
       let webConfig = fs.readFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`);
       let $Web = cheerio.load(webConfig, {
         xmlMode: true,
-        decodeEntities: false
+        decodeEntities: false,
       });
       $Web('mailSettings smtp').attr('from', ngWeb.resetPassEmail);
       fs.writeFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, $Web.html());
       log.success('11 Change email address');
 
       // 12. Edit .compilerconfig.json
-      fs.readFile(`${NewWebFolder}/${ngWeb.newWebName}/compilerconfig.json`, 'utf8', (err, data) => {
-        if (err) throw err;
-        data = changeCompilerconfig(data, ngWeb);
-        fs.writeFile(`${NewWebFolder}/${ngWeb.newWebName}/compilerconfig.json`, data, 'utf8', (err) => {
-          if (err) return console.log(err);
-          log.success('12 Edit .compilerconfig.json');
-        });
-      });
+      fs.readFile(
+        `${NewWebFolder}/${ngWeb.newWebName}/compilerconfig.json`,
+        'utf8',
+        (err, data) => {
+          if (err) throw err;
+          data = changeCompilerconfig(data, ngWeb);
+          fs.writeFile(
+            `${NewWebFolder}/${ngWeb.newWebName}/compilerconfig.json`,
+            data,
+            'utf8',
+            (err) => {
+              if (err) return console.log(err);
+              log.success('12 Edit .compilerconfig.json');
+            }
+          );
+        }
+      );
 
       // 13. Setup database
       // 13.1 Backup & Copy database
       const dbConfig = {
         server: 'MAX2',
         user: 'admin',
-        password: 'admin'
+        password: 'admin',
       };
 
       const sqlConn = new sql.ConnectionPool(dbConfig);
@@ -293,43 +338,45 @@ exports.postCopy = (req, res) => {
           log.error(err);
           return;
         }
-        sqlReq.query(`
-          BACKUP DATABASE ${ngWeb.templateDbName} TO DISK = 'C:\\Temp\\${ngWeb.templateDbName}.BAK'
-        `, (err, recordset) => {
-          if (err) {
-            log.error(err);
-          } else {
-            log.success(`13.1.1 Backup database: ${ngWeb.templateDbName}`);
-            sqlReq.query(`
-              USE [master]
-              RESTORE DATABASE [${ngWeb.newDbName}] FROM  DISK = N'C:\\Temp\\${ngWeb.templateDbName}.BAK' WITH  FILE = 1,  MOVE N'${ngWeb.templateDbName}_Data' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.mdf',  MOVE N'${ngWeb.templateDbName}_Log' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.ldf',  NOUNLOAD,  STATS = 5      
-            `, (err, recordset) => {
+        if (req.files.newDbFile) {
+          // Get database from upload files
+          const newDbFileBuffer = req.files.newDbFile[0].buffer;
+          fs.writeFileSync(`C:\\Temp\\${ngWeb.templateDbName}.BAK`, newDbFileBuffer, 'binary');
+          log.success(`13.1.1 Backup database: ${ngWeb.templateDbName}`);
+          createNewDb(sqlReq, ngWeb, sqlConn);
+        } else {
+          sqlReq.query(
+            `
+            BACKUP DATABASE ${ngWeb.templateDbName} TO DISK = 'C:\\Temp\\${ngWeb.templateDbName}.BAK'
+          `,
+            (err, recordset) => {
               if (err) {
                 log.error(err);
               } else {
-                log.success(`13.1.2 Create new database: ${ngWeb.templateDbName}`);
+                log.success(`13.1.1 Backup database: ${ngWeb.templateDbName}`);
+                createNewDb(sqlReq, ngWeb, sqlConn);
               }
-              sqlConn.close();
-            });
-          }
-        });
+            }
+          );
+        }
       });
       // 13.2 Change web.config
       webConfig = fs.readFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`);
       $Web = cheerio.load(webConfig, {
         xmlMode: true,
-        decodeEntities: false
+        decodeEntities: false,
       });
-      console.log($Web('connectionStrings add[name="umbracoDbDSN"]').attr('connectionString'));
-      console.log($Web('connectionStrings add[name="umbracoDbDSN"]').attr('connectionString', `server=MAX2;database=${ngWeb.newDbName};user id=umbraco;password=umbraco`));
+      $Web('connectionStrings add[name="umbracoDbDSN"]').attr(
+        'connectionString',
+        `server=MAX2;database=${ngWeb.newDbName};user id=umbraco;password=umbraco`
+      );
       fs.writeFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, $Web.html());
       log.success('13.2 Edit Web.config with new dataBase settings');
     }
 
-
     res.render('copy', {
       title: 'COPY',
-      ngWeb
+      ngWeb,
     });
   });
 };

@@ -1,12 +1,12 @@
 {
-  "name": "hackathon-starter",
-  "version": "4.3.0",
-  "description": "A boilerplate for Node.js web applications",
+  "name": "NGWeb",
+  "version": "1.0.13",
+  "description": "A tool to duplicate & modify next gen website for Adept",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/nerdmax/NGWeb.git"
   },
-  "author": "Sahat Yalkabov",
+  "author": "Max",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
@@ -98,7 +98,7 @@
         "error",
         {
           "arrays": "never",
-          "objects": "always",
+          "objects": "always-multiline",
           "imports": "never",
           "exports": "never",
           "functions": "ignore"

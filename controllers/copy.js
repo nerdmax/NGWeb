@@ -9,6 +9,12 @@ const sharp = require('sharp');
 
 const sql = require('mssql');
 
+const gulp = require('gulp');
+const less = require('gulp-less');
+const concatCss = require('gulp-concat-css');
+const cleanCSS = require('gulp-clean-css');
+const gutil = require('gulp-util');
+
 const rootPath = 'C:/Max/SurgaPortalWebsites/Adept.WebSites';
 
 /**
@@ -93,8 +99,10 @@ exports.postCopy = (req, res) => {
     sqlReq.query(
       `
                 USE [master]
-                RESTORE DATABASE [${ngWeb.newDbName}] FROM  DISK = N'C:\\Temp\\${ngWeb.templateDbName}.BAK' WITH  FILE = 1, MOVE N'${ngWeb.templateDbName}_Data' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.mdf', MOVE N'${ngWeb.templateDbName}_Log' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.ldf', NOUNLOAD, STATS = 5
-      `,
+                RESTORE DATABASE [${ngWeb.newDbName}] FROM  DISK = N'C:\\Temp\\${ngWeb.templateDbName}.BAK' WITH  FILE = 1, MOVE N'${ngWeb.templateDbName}_Data' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.mdf', MOVE N'${ngWeb.templateDbName}_Log' TO N'C:\\Program Files\\Microsoft SQL Server\\MSSQL13.MSSQLSERVER\\MSSQL\\DATA\\${ngWeb.newDbName}.ldf', NOUNLOAD, STATS = 5;
+                ALTER DATABASE [${ngWeb.newDbName}] MODIFY FILE ( NAME = ${ngWeb.templateDbName}_Data, NEWNAME = ${ngWeb.newDbName}_Data );
+                ALTER DATABASE [${ngWeb.newDbName}] MODIFY FILE ( NAME = ${ngWeb.templateDbName}_Log, NEWNAME = ${ngWeb.newDbName}_Log );
+                `,
       (err, recordset) => {
         if (err) {
           log.error(err);
@@ -372,6 +380,43 @@ exports.postCopy = (req, res) => {
       );
       fs.writeFileSync(`${NewWebFolder}/${ngWeb.newWebName}/Web.config`, $Web.html());
       log.success('13.2 Edit Web.config with new dataBase settings');
+
+      // 14.1 Generate CSS files
+      const cssfiles = [
+        `${NewWebFolder}/${ngWeb.newWebName}/css/bootstrap.css`,
+        `${NewWebFolder}/${ngWeb.newWebName}/css/jquery-ui.css`,
+        `${NewWebFolder}/${ngWeb.newWebName}/css/font-awesome.css`,
+        `${NewWebFolder}/${ngWeb.newWebName}/css/jquery.selectBoxIt.css`,
+        `${NewWebFolder}/${ngWeb.newWebName}/css/blueimp-gallery.css`,
+        `${NewWebFolder}/${ngWeb.newWebName}/css/Common.css`,
+        `${NewWebFolder}/${ngWeb.newWebName}/css/${ngWeb.newWebName}.css`
+      ];
+      gulp.task('compileLess', () =>
+        gulp
+          .src([
+            `${NewWebFolder}/${ngWeb.newWebName}/less/Common.less`,
+            `${NewWebFolder}/${ngWeb.newWebName}/less/${ngWeb.newWebName}.less`
+          ])
+          .pipe(less())
+          .pipe(gulp.dest(`${NewWebFolder}/${ngWeb.newWebName}/css`))
+      );
+      gulp.task('bundleCss', ['compileLess'], () =>
+        gulp
+          .src(cssfiles)
+          .pipe(concatCss('bundle.min.css'))
+          .pipe(
+            cleanCSS({
+              compatibility: 'ie8',
+              keepSpecialComments: 0,
+              keepBreaks: false,
+            })
+          )
+          .pipe(gulp.dest(`${NewWebFolder}/${ngWeb.newWebName}/css/`))
+          .on('end', () => {
+            gutil.log('14. Generate CSS files');
+          })
+      );
+      gulp.start('bundleCss');
     }
 
     res.render('copy', {

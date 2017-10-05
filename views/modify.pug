@@ -6,17 +6,24 @@ block content
   include partials/input.pug
   .page-header
     h1.text-center Modify the website
-
-  h2.text-center Choose the website that you want to modify
+  h2.text-center Choose the website that you want to Restore
   .row
     .col-md-12
-      select.form-control(id='chooseCompanyName')
-        - for (var i=0; i<ngWeb.templateWebNames.length; i++) {
-          option(selected=(ngWeb.templateWebNames[i] === companyName ? true : false)) #{ngWeb.templateWebNames[i]}
+      select.form-control(id='ngWebsFromDb')
+        option(value='') 
+        - for (var i=0; i<ngWebsFromDb.length; i++) {
+          option(value=(ngWebsFromDb[i]._id), selected=(ngWebsFromDb[i]._id.toString() === ngWebFromDbId ? true : false)) #{ngWebsFromDb[i].templateWebName}
         - }
 
-  form.form-horizontal(method='POST', id='modifyForm')
+  form.form-horizontal(method='POST', id='modifyForm', action='')
     input(name='_csrf', type='hidden', value=_csrf)
+    h2.text-center Choose the website that you want to modify
+    .form-group
+      .col-md-12
+        select.form-control.chooseCompanyName(id='templateWebName', name='templateWebName')
+          - for (var i=0; i<ngWeb.templateWebNames.length; i++) {
+            option(value=(ngWeb.templateWebNames[i]), selected=(ngWeb.templateWebNames[i] === companyName ? true : false)) #{ngWeb.templateWebNames[i]}
+          - }
     h2.text-center Blob settings
     h4 Blob Settings
     hr
@@ -656,4 +663,7 @@ block content
 
     .form-group
       .col-sm-8
-        button.btn.btn-primary(type='submit') Confirm the changes
+        button.btn.btn-primary(type='button', id='modifyBtn') Confirm the changes
+    .form-group
+      .col-sm-8
+        button.btn.btn-primary(type='button', id='storeBtn') Store the changes to database for later use

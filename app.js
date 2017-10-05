@@ -236,6 +236,7 @@ app.post(
 );
 app.get('/modify', modifyController.getModify);
 app.post('/modify', modifyController.postModify);
+app.post('/modify/store', modifyController.postModifyStore);
 app.get('/publish', publishController.getPublish);
 app.post('/publish', publishController.postPublish);
 app.get('/test', testController.getTest);

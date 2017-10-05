@@ -1187,7 +1187,7 @@ exports.getModify = (req, res) => {
           title: 'MODIFY',
           ngWeb,
           ngWebFromDbId: req.query.ngWebFromDb,
-          companyName: req.query.companyName || companyName,
+          companyName: req.query.companyName || ngWeb.templateWebName,
           ngWebsFromDb,
         });
       });

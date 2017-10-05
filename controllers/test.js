@@ -1,5 +1,5 @@
 const NgWeb = require('../models/Ngweb');
-const TestModel = require('../models/testModel');
+const Test = require('../models/testModel');
 // const symbolsParser = require('less-symbols-parser');
 const log = require('pretty-log');
 
@@ -28,15 +28,15 @@ exports.getTest = (req, res) => {
 
   // log.debug('DLKJLFJ');
 
-  // res.render('test', {
-  //   title: 'test',
-  // });
-
-  TestModel.find((err, bears) => {
-    if (err) res.send(err);
-
-    res.json(bears);
+  res.render('test', {
+    title: 'test',
   });
+
+  // Test.find((err, bears) => {
+  //   if (err) res.send(err);
+
+  //   res.json(bears);
+  // });
 };
 
 /**
@@ -47,26 +47,32 @@ exports.postTest = (req, res) => {
   // logger.debug(req);
   log.debug(JSON.stringify(req.body));
 
-  const testModel = new TestModel(); // create a new instance of the Bear model
-  testModel.name = req.body.name; // set the bears name (comes from the request)
+  const test = new Test({
+    name: String,
+    child: {
+      subName: String,
+    },
+  }); // create a new instance of the Bear model
+  test.name = req.body.name; // set the bears name (comes from the request)
+  test.child.subName = req.body.subName;
 
   // save the bear and check for errors
-  testModel.save((err) => {
+  test.save((err) => {
     if (err) res.send(err);
 
-    res.json({ message: `testModel created, NAME: ${testModel.name}` });
+    res.json({ message: `Test created, NAME: ${test.name}, SUBNAME: ${test.child.subName}` });
   });
 };
 
 exports.getTestById = (req, res) => {
-  TestModel.findById(req.params.test_id, (err, test) => {
+  Test.findById(req.params.test_id, (err, test) => {
     if (err) res.send(err);
     res.json(test);
   });
 };
 
 exports.updateTestById = (req, res) => {
-  TestModel.findById(req.params.test_id, (err, test) => {
+  Test.findById(req.params.test_id, (err, test) => {
     if (err) res.send(err);
 
     test.name = req.body.name; // update the bears info
@@ -81,7 +87,7 @@ exports.updateTestById = (req, res) => {
 };
 
 exports.deleteTestById = (req, res) => {
-  TestModel.remove(
+  Test.remove(
     {
       _id: req.params.test_id,
     },

@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 
+const childSchema = require('./ChildSchema');
+
 const testSchema = new mongoose.Schema(
   {
     name: String,
+    child: childSchema,
   },
   {
     timestamps: true,
   }
 );
 
-const testModel = mongoose.model('test', testSchema);
+const Test = mongoose.model('Test', testSchema);
 
-module.exports = testModel;
+module.exports = Test;

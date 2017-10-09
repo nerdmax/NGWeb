@@ -257,8 +257,7 @@ function changeBlobSettings(ngWeb, req) {
   };
   // .BlobSettings
   fs.readFile(
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}.BlobSettings`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}.BlobSettings`,
     (err, data) => {
       if (err) {
         throw err;
@@ -274,8 +273,7 @@ function changeBlobSettings(ngWeb, req) {
       log.error($blobsettings('blob').attr('accountkey'));
 
       fs.writeFile(
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}.BlobSettings`,
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}.BlobSettings`,
         $blobsettings.html(),
         (err) => {
           if (err) {
@@ -288,8 +286,7 @@ function changeBlobSettings(ngWeb, req) {
   );
   // FileSystemProviders.config
   fs.readFile(
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/Config/FileSystemProviders.config`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Config/FileSystemProviders.config`,
     (err, data) => {
       if (err) {
         throw err;
@@ -313,8 +310,7 @@ function changeBlobSettings(ngWeb, req) {
       log.warn($FileSystemProviders('add[key="connectionString"]').attr('value'));
 
       fs.writeFile(
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}/Config/FileSystemProviders.config`,
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Config/FileSystemProviders.config`,
         $FileSystemProviders.html(),
         (err) => {
           if (err) {
@@ -327,8 +323,7 @@ function changeBlobSettings(ngWeb, req) {
   );
   // cache.config
   fs.readFile(
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/Config/imageprocessor/cache.config`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Config/imageprocessor/cache.config`,
     (err, data) => {
       if (err) {
         throw err;
@@ -355,8 +350,7 @@ function changeBlobSettings(ngWeb, req) {
       log.warn($cache('setting[key="SourceStorageAccount"]').attr('value'));
 
       fs.writeFile(
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}/Config/imageprocessor/cache.config`,
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Config/imageprocessor/cache.config`,
         $cache.html(),
         (err) => {
           if (err) {
@@ -369,8 +363,7 @@ function changeBlobSettings(ngWeb, req) {
   );
   // security.config
   fs.readFile(
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/Config/imageprocessor/security.config`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Config/imageprocessor/security.config`,
     (err, data) => {
       if (err) {
         throw err;
@@ -396,8 +389,7 @@ function changeBlobSettings(ngWeb, req) {
       log.warn($security('whitelist add').attr('url'));
 
       fs.writeFile(
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}/Config/imageprocessor/security.config`,
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Config/imageprocessor/security.config`,
         $security.html(),
         (err) => {
           if (err) {
@@ -410,8 +402,7 @@ function changeBlobSettings(ngWeb, req) {
   );
   // Web.config
   fs.readFile(
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/Web.config`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Web.config`,
     (err, data) => {
       if (err) {
         throw err;
@@ -432,8 +423,7 @@ function changeBlobSettings(ngWeb, req) {
       log.warn($Web('add[key="StaticContent.StorageConnectionString"]').attr('value'));
 
       fs.writeFile(
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}/Web.config`,
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/Web.config`,
         $Web.html(),
         (err) => {
           if (err) {
@@ -1114,39 +1104,25 @@ function changeAllVar(data, palette, ngWeb) {
   return data;
 }
 
-function generateCssFiles(req) {
+function generateCssFiles(req, ngWeb) {
   // Compile less files and bundle css files
   const cssfiles = [
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/bootstrap.css`,
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/jquery-ui.css`,
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/font-awesome.css`,
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/jquery.selectBoxIt.css`,
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/blueimp-gallery.css`,
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/Common.css`,
-    `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-      companyName}/css/${req.query.companyName || companyName}.css`
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/bootstrap.css`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/jquery-ui.css`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/font-awesome.css`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/jquery.selectBoxIt.css`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/blueimp-gallery.css`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/Common.css`,
+    `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/${ngWeb.templateWebName}.css`
   ];
   gulp.task('compileLess', () =>
     gulp
       .src([
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}/less/Common.less`,
-        `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-          companyName}/less/${req.query.companyName || companyName}.less`
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/less/Common.less`,
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/less/${ngWeb.templateWebName}.less`
       ])
       .pipe(less())
-      .pipe(
-        gulp.dest(
-          `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-            companyName}/css`
-        )
-      )
+      .pipe(gulp.dest(`${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css`))
   );
   gulp.task('bundleCss', ['compileLess'], () =>
     gulp
@@ -1159,12 +1135,7 @@ function generateCssFiles(req) {
           keepBreaks: false,
         })
       )
-      .pipe(
-        gulp.dest(
-          `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-            companyName}/css/`
-        )
-      )
+      .pipe(gulp.dest(`${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/css/`))
   );
   gulp.start('bundleCss');
 }
@@ -1202,11 +1173,11 @@ exports.getModify = (req, res) => {
             templateWebNames.push(file);
           }
         }, this);
-  
+
         const ngWeb = new NgWeb({
           templateWebNames,
         });
-  
+
         // Get blob settings
         const packagejson = JSON.parse(
           fs.readFileSync(`${rootPath}/${req.query.companyName || companyName}/package.json`)
@@ -1218,7 +1189,7 @@ exports.getModify = (req, res) => {
         const $blobsettings = cheerio.load(blobsettings, {
           xmlMode: true,
         });
-  
+
         const blobinfo = {
           blobaddress: $blobsettings('blob').attr('blobaddress'),
           accountname: $blobsettings('blob')
@@ -1227,23 +1198,23 @@ exports.getModify = (req, res) => {
             .replace('.blob.core.windows.net/', ''),
           accountkey: $blobsettings('blob').attr('accountkey'),
         };
-  
+
         // console.log(blobinfo);
-  
+
         ngWeb.blob.blobAddress = blobinfo.blobaddress;
         ngWeb.blob.blobAccountKey = blobinfo.accountkey;
-  
+
         fs.readFile(
           `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
             companyName}/less/less/variables.less`,
           'utf8',
           (err, data) => {
             if (err) throw err;
-  
+
             const palette = lessToJs(data);
             // logger.debug(palette);
             getAllVar(ngWeb, palette);
-  
+
             res.render('modify', {
               title: 'MODIFY',
               ngWeb,
@@ -1262,245 +1233,247 @@ exports.getModify = (req, res) => {
  * Modify Next Gen Web page.
  */
 exports.postModify = (req, res) => {
-  // Get templateWebNames list
-  fs.readdir(rootPath, (err, files) => {
-    // console.log(files);
-    const templateWebNames = [];
-    files.forEach((file) => {
-      if (fs.lstatSync(`${rootPath}/${file}`).isDirectory()) {
-        templateWebNames.push(file);
-      }
-    }, this);
+  NgWeb.find((err, ngWebsFromDb) => {
+    if (err) res.send(err);
+    // Get templateWebNames list
+    fs.readdir(rootPath, (err, files) => {
+      // console.log(files);
+      const templateWebNames = [];
+      files.forEach((file) => {
+        if (fs.lstatSync(`${rootPath}/${file}`).isDirectory()) {
+          templateWebNames.push(file);
+        }
+      }, this);
 
-    // console.log(req.body);
+      // console.log(req.body);
 
-    // Construct NgWeb object
-    const ngWeb = new NgWeb({
-      templateWebNames,
-      templateWebName: req.body.templateWebName,
-      newWebName: req.body.newWebName,
-      portNO: req.body.portNO,
-      resetPassEmail: req.body.resetPassEmail,
-      database: {
-        databaseName: req.body.databaseName,
-        databaseUsername: req.body.databaseUsername,
-        databasePassword: req.body.databasePassword,
-      },
-      blob: {
-        blobAddress: req.body.blobAddress,
-        blobAccountKey: req.body.blobAccountKey,
-      },
-      styleSettings: {
-        colorSettings: {
-          darkColor1: req.body.darkColor1,
-          darkColor2: req.body.darkColor2,
-          darkColor3: req.body.darkColor3,
-          lightColor1: req.body.lightColor1,
-          lightColor2: req.body.lightColor2,
-          lightColor3: req.body.lightColor3,
-          globalHoverColor1: req.body.globalHoverColor1,
-          globalHoverColor2: req.body.globalHoverColor2,
+      // Construct NgWeb object
+      const ngWeb = new NgWeb({
+        templateWebNames,
+        templateWebName: req.body.templateWebName,
+        newWebName: req.body.newWebName,
+        portNO: req.body.portNO,
+        resetPassEmail: req.body.resetPassEmail,
+        database: {
+          databaseName: req.body.databaseName,
+          databaseUsername: req.body.databaseUsername,
+          databasePassword: req.body.databasePassword,
         },
-        otherSettings: {
-          globalTextShadow1: req.body.globalTextShadow1,
+        blob: {
+          blobAddress: req.body.blobAddress,
+          blobAccountKey: req.body.blobAccountKey,
         },
-        themeSettings: {
-          bgColor: {
-            theme1BgColor: req.body.theme1BgColor,
-            theme2BgColor: req.body.theme2BgColor,
-            theme3BgColor: req.body.theme3BgColor,
-            theme4BgColor: req.body.theme4BgColor,
+        styleSettings: {
+          colorSettings: {
+            darkColor1: req.body.darkColor1,
+            darkColor2: req.body.darkColor2,
+            darkColor3: req.body.darkColor3,
+            lightColor1: req.body.lightColor1,
+            lightColor2: req.body.lightColor2,
+            lightColor3: req.body.lightColor3,
+            globalHoverColor1: req.body.globalHoverColor1,
+            globalHoverColor2: req.body.globalHoverColor2,
           },
-          bgGradient: {
-            theme1BgGradient: req.body.theme1BgGradient === undefined ? 'false' : 'true',
-            theme2BgGradient: req.body.theme2BgGradient === undefined ? 'false' : 'true',
-            theme3BgGradient: req.body.theme3BgGradient === undefined ? 'false' : 'true',
-            theme4BgGradient: req.body.theme4BgGradient === undefined ? 'false' : 'true',
+          otherSettings: {
+            globalTextShadow1: req.body.globalTextShadow1,
           },
-          bgGradientDetails: {
-            theme1BgGradientDetails: req.body.theme1BgGradientDetails,
-            theme2BgGradientDetails: req.body.theme2BgGradientDetails,
-            theme3BgGradientDetails: req.body.theme3BgGradientDetails,
-            theme4BgGradientDetails: req.body.theme4BgGradientDetails,
+          themeSettings: {
+            bgColor: {
+              theme1BgColor: req.body.theme1BgColor,
+              theme2BgColor: req.body.theme2BgColor,
+              theme3BgColor: req.body.theme3BgColor,
+              theme4BgColor: req.body.theme4BgColor,
+            },
+            bgGradient: {
+              theme1BgGradient: req.body.theme1BgGradient === undefined ? 'false' : 'true',
+              theme2BgGradient: req.body.theme2BgGradient === undefined ? 'false' : 'true',
+              theme3BgGradient: req.body.theme3BgGradient === undefined ? 'false' : 'true',
+              theme4BgGradient: req.body.theme4BgGradient === undefined ? 'false' : 'true',
+            },
+            bgGradientDetails: {
+              theme1BgGradientDetails: req.body.theme1BgGradientDetails,
+              theme2BgGradientDetails: req.body.theme2BgGradientDetails,
+              theme3BgGradientDetails: req.body.theme3BgGradientDetails,
+              theme4BgGradientDetails: req.body.theme4BgGradientDetails,
+            },
+            h1TextColor: {
+              theme1H1TextColor: req.body.theme1H1TextColor,
+              theme2H1TextColor: req.body.theme2H1TextColor,
+              theme3H1TextColor: req.body.theme3H1TextColor,
+              theme4H1TextColor: req.body.theme4H1TextColor,
+            },
+            h2TextColor: {
+              theme1H2TextColor: req.body.theme1H2TextColor,
+              theme2H2TextColor: req.body.theme2H2TextColor,
+              theme3H2TextColor: req.body.theme3H2TextColor,
+              theme4H2TextColor: req.body.theme4H2TextColor,
+            },
+            h3TextColor: {
+              theme1H3TextColor: req.body.theme1H3TextColor,
+              theme2H3TextColor: req.body.theme2H3TextColor,
+              theme3H3TextColor: req.body.theme3H3TextColor,
+              theme4H3TextColor: req.body.theme4H3TextColor,
+            },
+            h4TextColor: {
+              theme1H4TextColor: req.body.theme1H4TextColor,
+              theme2H4TextColor: req.body.theme2H4TextColor,
+              theme3H4TextColor: req.body.theme3H4TextColor,
+              theme4H4TextColor: req.body.theme4H4TextColor,
+            },
+            pTextColor: {
+              theme1PTextColor: req.body.theme1PTextColor,
+              theme2PTextColor: req.body.theme2PTextColor,
+              theme3PTextColor: req.body.theme3PTextColor,
+              theme4PTextColor: req.body.theme4PTextColor,
+            },
+            hyperLinkTextColor: {
+              theme1HyperlinkTextColor: req.body.theme1HyperlinkTextColor,
+              theme2HyperlinkTextColor: req.body.theme2HyperlinkTextColor,
+              theme3HyperlinkTextColor: req.body.theme3HyperlinkTextColor,
+              theme4HyperlinkTextColor: req.body.theme4HyperlinkTextColor,
+            },
+            hyperLinkHoverColor: {
+              theme1HyperlinkHoverColor: req.body.theme1HyperlinkHoverColor,
+              theme2HyperlinkHoverColor: req.body.theme2HyperlinkHoverColor,
+              theme3HyperlinkHoverColor: req.body.theme3HyperlinkHoverColor,
+              theme4HyperlinkHoverColor: req.body.theme4HyperlinkHoverColor,
+            },
+            IconTextColor: {
+              theme1IconTextColor: req.body.theme1IconTextColor,
+              theme2IconTextColor: req.body.theme2IconTextColor,
+              theme3IconTextColor: req.body.theme3IconTextColor,
+              theme4IconTextColor: req.body.theme4IconTextColor,
+            },
+            buttonTextColor: {
+              theme1ButtonTextColor: req.body.theme1ButtonTextColor,
+              theme2ButtonTextColor: req.body.theme2ButtonTextColor,
+              theme3ButtonTextColor: req.body.theme3ButtonTextColor,
+              theme4ButtonTextColor: req.body.theme4ButtonTextColor,
+            },
+            buttonTextHoverColor: {
+              theme1ButtonTextHoverColor: req.body.theme1ButtonTextHoverColor,
+              theme2ButtonTextHoverColor: req.body.theme2ButtonTextHoverColor,
+              theme3ButtonTextHoverColor: req.body.theme3ButtonTextHoverColor,
+              theme4ButtonTextHoverColor: req.body.theme4ButtonTextHoverColor,
+            },
+            buttonBgColor: {
+              theme1ButtonBgColor: req.body.theme1ButtonBgColor,
+              theme2ButtonBgColor: req.body.theme2ButtonBgColor,
+              theme3ButtonBgColor: req.body.theme3ButtonBgColor,
+              theme4ButtonBgColor: req.body.theme4ButtonBgColor,
+            },
+            buttonBgGradient: {
+              theme1ButtonBgGradient:
+                req.body.theme1ButtonBgGradient === undefined ? 'false' : 'true',
+              theme2ButtonBgGradient:
+                req.body.theme2ButtonBgGradient === undefined ? 'false' : 'true',
+              theme3ButtonBgGradient:
+                req.body.theme3ButtonBgGradient === undefined ? 'false' : 'true',
+              theme4ButtonBgGradient:
+                req.body.theme4ButtonBgGradient === undefined ? 'false' : 'true',
+            },
+            buttonBgGradientDetails: {
+              theme1ButtonBgGradientDetails: req.body.theme1ButtonBgGradientDetails,
+              theme2ButtonBgGradientDetails: req.body.theme2ButtonBgGradientDetails,
+              theme3ButtonBgGradientDetails: req.body.theme3ButtonBgGradientDetails,
+              theme4ButtonBgGradientDetails: req.body.theme4ButtonBgGradientDetails,
+            },
+            buttonBgHoverColor: {
+              theme1ButtonBgHoverColor: req.body.theme1ButtonBgHoverColor,
+              theme2ButtonBgHoverColor: req.body.theme2ButtonBgHoverColor,
+              theme3ButtonBgHoverColor: req.body.theme3ButtonBgHoverColor,
+              theme4ButtonBgHoverColor: req.body.theme4ButtonBgHoverColor,
+            },
+            buttonIs3D: {
+              theme1ButtonIs3D: req.body.theme1ButtonIs3D === undefined ? 'false' : 'true',
+              theme2ButtonIs3D: req.body.theme2ButtonIs3D === undefined ? 'false' : 'true',
+              theme3ButtonIs3D: req.body.theme3ButtonIs3D === undefined ? 'false' : 'true',
+              theme4ButtonIs3D: req.body.theme4ButtonIs3D === undefined ? 'false' : 'true',
+            },
           },
-          h1TextColor: {
-            theme1H1TextColor: req.body.theme1H1TextColor,
-            theme2H1TextColor: req.body.theme2H1TextColor,
-            theme3H1TextColor: req.body.theme3H1TextColor,
-            theme4H1TextColor: req.body.theme4H1TextColor,
+          headerSettings: {
+            haderBackground: {
+              navBackgroundColor: req.body.navBackgroundColor,
+            },
+            topHeader: {
+              navContactFontColor: req.body.navContactFontColor,
+              navContactFontHoverColor: req.body.navContactFontHoverColor,
+              navContactIconColor: req.body.navContactIconColor,
+              navContactIconHoverColor: req.body.navContactIconHoverColor,
+              navWatchlistFontColor: req.body.navWatchlistFontColor,
+              navWatchlistFontHoverColor: req.body.navWatchlistFontHoverColor,
+              navWatchlistIconColor: req.body.navWatchlistIconColor,
+              navWatchlistIconHoverColor: req.body.navWatchlistIconHoverColor,
+            },
+            bottomHeader: {
+              navFontColor: req.body.navFontColor,
+              navFontHoverColor: req.body.navFontHoverColor,
+              navSecondFontColor: req.body.navSecondFontColor,
+              navSecondFontHoverColor: req.body.navSecondFontHoverColor,
+              navMobileFontColor: req.body.navMobileFontColor,
+              navMobileFontHoverColor: req.body.navMobileFontHoverColor,
+              navMobileSecondFontColor: req.body.navMobileSecondFontColor,
+              navMobileSecondFontHoverColor: req.body.navMobileSecondFontHoverColor,
+              navToogleButtonColor: req.body.navToogleButtonColor,
+            },
           },
-          h2TextColor: {
-            theme1H2TextColor: req.body.theme1H2TextColor,
-            theme2H2TextColor: req.body.theme2H2TextColor,
-            theme3H2TextColor: req.body.theme3H2TextColor,
-            theme4H2TextColor: req.body.theme4H2TextColor,
-          },
-          h3TextColor: {
-            theme1H3TextColor: req.body.theme1H3TextColor,
-            theme2H3TextColor: req.body.theme2H3TextColor,
-            theme3H3TextColor: req.body.theme3H3TextColor,
-            theme4H3TextColor: req.body.theme4H3TextColor,
-          },
-          h4TextColor: {
-            theme1H4TextColor: req.body.theme1H4TextColor,
-            theme2H4TextColor: req.body.theme2H4TextColor,
-            theme3H4TextColor: req.body.theme3H4TextColor,
-            theme4H4TextColor: req.body.theme4H4TextColor,
-          },
-          pTextColor: {
-            theme1PTextColor: req.body.theme1PTextColor,
-            theme2PTextColor: req.body.theme2PTextColor,
-            theme3PTextColor: req.body.theme3PTextColor,
-            theme4PTextColor: req.body.theme4PTextColor,
-          },
-          hyperLinkTextColor: {
-            theme1HyperlinkTextColor: req.body.theme1HyperlinkTextColor,
-            theme2HyperlinkTextColor: req.body.theme2HyperlinkTextColor,
-            theme3HyperlinkTextColor: req.body.theme3HyperlinkTextColor,
-            theme4HyperlinkTextColor: req.body.theme4HyperlinkTextColor,
-          },
-          hyperLinkHoverColor: {
-            theme1HyperlinkHoverColor: req.body.theme1HyperlinkHoverColor,
-            theme2HyperlinkHoverColor: req.body.theme2HyperlinkHoverColor,
-            theme3HyperlinkHoverColor: req.body.theme3HyperlinkHoverColor,
-            theme4HyperlinkHoverColor: req.body.theme4HyperlinkHoverColor,
-          },
-          IconTextColor: {
-            theme1IconTextColor: req.body.theme1IconTextColor,
-            theme2IconTextColor: req.body.theme2IconTextColor,
-            theme3IconTextColor: req.body.theme3IconTextColor,
-            theme4IconTextColor: req.body.theme4IconTextColor,
-          },
-          buttonTextColor: {
-            theme1ButtonTextColor: req.body.theme1ButtonTextColor,
-            theme2ButtonTextColor: req.body.theme2ButtonTextColor,
-            theme3ButtonTextColor: req.body.theme3ButtonTextColor,
-            theme4ButtonTextColor: req.body.theme4ButtonTextColor,
-          },
-          buttonTextHoverColor: {
-            theme1ButtonTextHoverColor: req.body.theme1ButtonTextHoverColor,
-            theme2ButtonTextHoverColor: req.body.theme2ButtonTextHoverColor,
-            theme3ButtonTextHoverColor: req.body.theme3ButtonTextHoverColor,
-            theme4ButtonTextHoverColor: req.body.theme4ButtonTextHoverColor,
-          },
-          buttonBgColor: {
-            theme1ButtonBgColor: req.body.theme1ButtonBgColor,
-            theme2ButtonBgColor: req.body.theme2ButtonBgColor,
-            theme3ButtonBgColor: req.body.theme3ButtonBgColor,
-            theme4ButtonBgColor: req.body.theme4ButtonBgColor,
-          },
-          buttonBgGradient: {
-            theme1ButtonBgGradient:
-              req.body.theme1ButtonBgGradient === undefined ? 'false' : 'true',
-            theme2ButtonBgGradient:
-              req.body.theme2ButtonBgGradient === undefined ? 'false' : 'true',
-            theme3ButtonBgGradient:
-              req.body.theme3ButtonBgGradient === undefined ? 'false' : 'true',
-            theme4ButtonBgGradient:
-              req.body.theme4ButtonBgGradient === undefined ? 'false' : 'true',
-          },
-          buttonBgGradientDetails: {
-            theme1ButtonBgGradientDetails: req.body.theme1ButtonBgGradientDetails,
-            theme2ButtonBgGradientDetails: req.body.theme2ButtonBgGradientDetails,
-            theme3ButtonBgGradientDetails: req.body.theme3ButtonBgGradientDetails,
-            theme4ButtonBgGradientDetails: req.body.theme4ButtonBgGradientDetails,
-          },
-          buttonBgHoverColor: {
-            theme1ButtonBgHoverColor: req.body.theme1ButtonBgHoverColor,
-            theme2ButtonBgHoverColor: req.body.theme2ButtonBgHoverColor,
-            theme3ButtonBgHoverColor: req.body.theme3ButtonBgHoverColor,
-            theme4ButtonBgHoverColor: req.body.theme4ButtonBgHoverColor,
-          },
-          buttonIs3D: {
-            theme1ButtonIs3D: req.body.theme1ButtonIs3D === undefined ? 'false' : 'true',
-            theme2ButtonIs3D: req.body.theme2ButtonIs3D === undefined ? 'false' : 'true',
-            theme3ButtonIs3D: req.body.theme3ButtonIs3D === undefined ? 'false' : 'true',
-            theme4ButtonIs3D: req.body.theme4ButtonIs3D === undefined ? 'false' : 'true',
+          footerSettings: {
+            footerBackground: {
+              footerBgColor: req.body.footerBgColor,
+              footerMianBackGroundColor: req.body.footerMianBackGroundColor,
+              footerMainBottomDividerColor: req.body.footerMainBottomDividerColor,
+              footerBottomBackgroundColor: req.body.footerBottomBackgroundColor,
+            },
+            footerColor: {
+              footerFontColor: req.body.footerFontColor,
+              footerFontHoverColor: req.body.footerFontHoverColor,
+              footerIconColor: req.body.footerIconColor,
+              footerIconHoverColor: req.body.footerIconHoverColor,
+              footerRoundIconColor: req.body.footerRoundIconColor,
+              footerRoundIconBgColor: req.body.footerRoundIconBgColor,
+              footerRoundIconHoverColor: req.body.footerRoundIconHoverColor,
+              footerRoundIconBgHoverColor: req.body.footerRoundIconBgHoverColor,
+            },
           },
         },
-        headerSettings: {
-          haderBackground: {
-            navBackgroundColor: req.body.navBackgroundColor,
-          },
-          topHeader: {
-            navContactFontColor: req.body.navContactFontColor,
-            navContactFontHoverColor: req.body.navContactFontHoverColor,
-            navContactIconColor: req.body.navContactIconColor,
-            navContactIconHoverColor: req.body.navContactIconHoverColor,
-            navWatchlistFontColor: req.body.navWatchlistFontColor,
-            navWatchlistFontHoverColor: req.body.navWatchlistFontHoverColor,
-            navWatchlistIconColor: req.body.navWatchlistIconColor,
-            navWatchlistIconHoverColor: req.body.navWatchlistIconHoverColor,
-          },
-          bottomHeader: {
-            navFontColor: req.body.navFontColor,
-            navFontHoverColor: req.body.navFontHoverColor,
-            navSecondFontColor: req.body.navSecondFontColor,
-            navSecondFontHoverColor: req.body.navSecondFontHoverColor,
-            navMobileFontColor: req.body.navMobileFontColor,
-            navMobileFontHoverColor: req.body.navMobileFontHoverColor,
-            navMobileSecondFontColor: req.body.navMobileSecondFontColor,
-            navMobileSecondFontHoverColor: req.body.navMobileSecondFontHoverColor,
-            navToogleButtonColor: req.body.navToogleButtonColor,
-          },
-        },
-        footerSettings: {
-          footerBackground: {
-            footerBgColor: req.body.footerBgColor,
-            footerMianBackGroundColor: req.body.footerMianBackGroundColor,
-            footerMainBottomDividerColor: req.body.footerMainBottomDividerColor,
-            footerBottomBackgroundColor: req.body.footerBottomBackgroundColor,
-          },
-          footerColor: {
-            footerFontColor: req.body.footerFontColor,
-            footerFontHoverColor: req.body.footerFontHoverColor,
-            footerIconColor: req.body.footerIconColor,
-            footerIconHoverColor: req.body.footerIconHoverColor,
-            footerRoundIconColor: req.body.footerRoundIconColor,
-            footerRoundIconBgColor: req.body.footerRoundIconBgColor,
-            footerRoundIconHoverColor: req.body.footerRoundIconHoverColor,
-            footerRoundIconBgHoverColor: req.body.footerRoundIconBgHoverColor,
-          },
-        },
-      },
-    });
-    // console.log(ngWeb);
-    // logger.debug(JSON.stringify(req.body));
-    logger.debug(JSON.stringify(ngWeb));
+      });
+      // console.log(ngWeb);
+      // logger.debug(JSON.stringify(req.body));
+      logger.debug(JSON.stringify(ngWeb));
 
-    // Blob
-    changeBlobSettings(ngWeb, req);
+      // Blob
+      changeBlobSettings(ngWeb, req);
 
-    // 4 Themes
-    fs.readFile(
-      `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-        companyName}/less/less/variables.less`,
-      'utf8',
-      (err, data) => {
-        if (err) throw err;
+      // 4 Themes
+      fs.readFile(
+        `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/less/less/variables.less`,
+        'utf8',
+        (err, data) => {
+          if (err) throw err;
 
-        const palette = lessToJs(data);
-        data = changeAllVar(data, palette, ngWeb);
+          const palette = lessToJs(data);
+          data = changeAllVar(data, palette, ngWeb);
 
-        // Write changed data back to variable.less file
-        fs.writeFile(
-          `${rootPath}/${req.query.companyName || companyName}/${req.query.companyName ||
-            companyName}/less/less/variables.less`,
-          data,
-          'utf8',
-          (err) => {
-            if (err) return console.log(err);
+          // Write changed data back to variable.less file
+          fs.writeFile(
+            `${rootPath}/${ngWeb.templateWebName}/${ngWeb.templateWebName}/less/less/variables.less`,
+            data,
+            'utf8',
+            (err) => {
+              if (err) return console.log(err);
 
-            generateCssFiles(req);
-          }
-        );
-      }
-    );
+              generateCssFiles(req, ngWeb);
+            }
+          );
+        }
+      );
 
-    res.render('modify', {
-      title: 'MODIFY',
-      ngWeb,
-      companyName: req.query.companyName || companyName,
+      res.render('modify', {
+        title: 'MODIFY',
+        ngWeb,
+        companyName: ngWeb.templateWebName || companyName,
+        ngWebsFromDb,
+      });
     });
   });
 };

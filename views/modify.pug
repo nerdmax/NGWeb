@@ -588,10 +588,15 @@ block content
         select.form-control(id='navMobileSecondFontHoverColor', name='navMobileSecondFontHoverColor')
           +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navMobileSecondFontHoverColor)
     .form-group
-      label.col-sm-4.control-label(for='navToogleButtonColor') Mobile nav toggle button color
+      label.col-sm-4.control-label(for='navToggleButtonColor') Mobile nav toggle button color
       .col-sm-8
-        select.form-control(id='navToogleButtonColor', name='navToogleButtonColor')
-          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navToogleButtonColor)
+        select.form-control(id='navToggleButtonColor', name='navToggleButtonColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navToggleButtonColor)
+    .form-group
+      label.col-sm-4.control-label(for='navToggleButtonBgColor') Mobile nav toggle button background color
+      .col-sm-8
+        select.form-control(id='navToggleButtonBgColor', name='navToggleButtonBgColor')
+          +colorOptions(ngWeb.styleSettings.headerSettings.bottomHeader.navToggleButtonBgColor)
 
     h2.text-center Footer
 

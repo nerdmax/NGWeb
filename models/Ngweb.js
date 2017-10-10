@@ -166,7 +166,8 @@ const ngwebSchema = new mongoose.Schema({
         navMobileFontHoverColor: String,
         navMobileSecondFontColor: String,
         navMobileSecondFontHoverColor: String,
-        navToogleButtonColor: String,
+        navToggleButtonColor: String,
+        navToggleButtonBgColor: String,
       }
     },
     footerSettings: {

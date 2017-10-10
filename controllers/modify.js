@@ -218,8 +218,10 @@ function getAllVar(ngWeb, palette) {
     palette['@navMobileSecondFontColor'];
   ngWeb.styleSettings.headerSettings.bottomHeader.navMobileSecondFontHoverColor =
     palette['@navMobileSecondFontHoverColor'];
-  ngWeb.styleSettings.headerSettings.bottomHeader.navToogleButtonColor =
-    palette['@navToogleButtonColor'];
+  ngWeb.styleSettings.headerSettings.bottomHeader.navToggleButtonColor =
+    palette['@navToggleButtonColor'];
+  ngWeb.styleSettings.headerSettings.bottomHeader.navToggleButtonBgColor =
+    palette['@navToggleButtonBgColor'];
 
   // Footer
   // Get Footer background style
@@ -1022,8 +1024,14 @@ function changeAllVar(data, palette, ngWeb) {
   );
   data = changeVar(
     palette,
-    '@navToogleButtonColor',
-    ngWeb.styleSettings.headerSettings.bottomHeader.navToogleButtonColor,
+    '@navToggleButtonColor',
+    ngWeb.styleSettings.headerSettings.bottomHeader.navToggleButtonColor,
+    data
+  );
+  data = changeVar(
+    palette,
+    '@navToggleButtonBgColor',
+    ngWeb.styleSettings.headerSettings.bottomHeader.navToggleButtonBgColor,
     data
   );
   // Footer
@@ -1414,7 +1422,8 @@ exports.postModify = (req, res) => {
               navMobileFontHoverColor: req.body.navMobileFontHoverColor,
               navMobileSecondFontColor: req.body.navMobileSecondFontColor,
               navMobileSecondFontHoverColor: req.body.navMobileSecondFontHoverColor,
-              navToogleButtonColor: req.body.navToogleButtonColor,
+              navToggleButtonColor: req.body.navToggleButtonColor,
+              navToggleButtonBgColor: req.body.navToggleButtonBgColor,
             },
           },
           footerSettings: {
@@ -1663,7 +1672,8 @@ exports.postModifyStore = (req, res) => {
             navMobileFontHoverColor: req.body.navMobileFontHoverColor,
             navMobileSecondFontColor: req.body.navMobileSecondFontColor,
             navMobileSecondFontHoverColor: req.body.navMobileSecondFontHoverColor,
-            navToogleButtonColor: req.body.navToogleButtonColor,
+            navToggleButtonColor: req.body.navToggleButtonColor,
+            navToggleButtonBgColor: req.body.navToggleButtonBgColor,
           },
         },
         footerSettings: {

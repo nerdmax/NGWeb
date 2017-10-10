@@ -185,6 +185,8 @@ function constructNgWebObject(req, templateWebNames) {
       footerSettings: {
         footerBackground: {
           footerBgColor: req.body.footerBgColor,
+          footerBgGradient: req.body.footerBgGradient === undefined ? 'false' : 'true',
+          footerBgGradientDetails: req.body.footerBgGradientDetails,
           footerMianBackGroundColor: req.body.footerMianBackGroundColor,
           footerMainBottomDividerColor: req.body.footerMainBottomDividerColor,
           footerBottomBackgroundColor: req.body.footerBottomBackgroundColor,
@@ -198,6 +200,8 @@ function constructNgWebObject(req, templateWebNames) {
           footerRoundIconBgColor: req.body.footerRoundIconBgColor,
           footerRoundIconHoverColor: req.body.footerRoundIconHoverColor,
           footerRoundIconBgHoverColor: req.body.footerRoundIconBgHoverColor,
+          footerRoundIconBgGradient: req.body.footerRoundIconBgGradient === undefined ? 'false' : 'true',
+          footerRoundIconBgGradientDetails: req.body.footerRoundIconBgGradientDetails,
         },
       },
     },
@@ -415,6 +419,8 @@ function getAllVar(ngWeb, palette) {
   // Footer
   // Get Footer background style
   ngWeb.styleSettings.footerSettings.footerBackground.footerBgColor = palette['@footerBgColor'];
+  ngWeb.styleSettings.footerSettings.footerBackground.footerBgGradient = palette['@footerBgGradient'];
+  ngWeb.styleSettings.footerSettings.footerBackground.footerBgGradientDetails = palette['@footerBgGradientDetails'];
   ngWeb.styleSettings.footerSettings.footerBackground.footerMianBackGroundColor =
     palette['@footerMianBackGroundColor'];
   ngWeb.styleSettings.footerSettings.footerBackground.footerMainBottomDividerColor =
@@ -436,6 +442,10 @@ function getAllVar(ngWeb, palette) {
     palette['@footerRoundIconHoverColor'];
   ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgHoverColor =
     palette['@footerRoundIconBgHoverColor'];
+  ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgGradient =
+    palette['@footerRoundIconBgGradient'];
+  ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgGradientDetails =
+    palette['@footerRoundIconBgGradientDetails'];
 }
 
 function changeBlobSettings(ngWeb, req) {
@@ -1233,6 +1243,18 @@ function changeAllVar(data, palette, ngWeb) {
   );
   data = changeVar(
     palette,
+    '@footerBgGradient',
+    ngWeb.styleSettings.footerSettings.footerBackground.footerBgGradient,
+    data
+  );
+  data = changeVar(
+    palette,
+    '@footerBgGradientDetails',
+    ngWeb.styleSettings.footerSettings.footerBackground.footerBgGradientDetails,
+    data
+  );
+  data = changeVar(
+    palette,
     '@footerMianBackGroundColor',
     ngWeb.styleSettings.footerSettings.footerBackground.footerMianBackGroundColor,
     data
@@ -1296,6 +1318,18 @@ function changeAllVar(data, palette, ngWeb) {
     palette,
     '@footerRoundIconBgHoverColor',
     ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgHoverColor,
+    data
+  );
+  data = changeVar(
+    palette,
+    '@footerRoundIconBgGradient',
+    ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgGradient,
+    data
+  );
+  data = changeVar(
+    palette,
+    '@footerRoundIconBgGradientDetails',
+    ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgGradientDetails,
     data
   );
   return data;

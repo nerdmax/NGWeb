@@ -173,6 +173,8 @@ const ngwebSchema = new mongoose.Schema({
     footerSettings: {
       footerBackground: {
         footerBgColor: String,
+        footerBgGradient: String,
+        footerBgGradientDetails: String,
         footerMianBackGroundColor: String,
         footerMainBottomDividerColor: String,
         footerBottomBackgroundColor: String,
@@ -186,6 +188,8 @@ const ngwebSchema = new mongoose.Schema({
         footerRoundIconBgColor: String,
         footerRoundIconHoverColor: String,
         footerRoundIconBgHoverColor: String,
+        footerRoundIconBgGradient: String,
+        footerRoundIconBgGradientDetails: String,
       }
     }
   }

@@ -608,6 +608,14 @@ block content
         select.form-control(id='footerBgColor', name='footerBgColor')
           +colorOptions(ngWeb.styleSettings.footerSettings.footerBackground.footerBgColor)
     .form-group
+      label.col-sm-4.control-label(for='footerBgGradient') Whole footer background gradient
+      .col-sm-8
+        +checkBox(ngWeb.styleSettings.footerSettings.footerBackground.footerBgGradient, 'footerBgGradient')
+    .form-group
+      label.col-sm-4.control-label(for='footerBgGradientDetails') Whole footer background gradient details
+      .col-sm-8
+        +input(ngWeb.styleSettings.footerSettings.footerBackground.footerBgGradientDetails, 'footerBgGradientDetails')
+    .form-group
       label.col-sm-4.control-label(for='footerMianBackGroundColor') Main footer background color
       .col-sm-8
         select.form-control(id='footerMianBackGroundColor', name='footerMianBackGroundColor')
@@ -665,6 +673,14 @@ block content
       .col-sm-8
         select.form-control(id='footerRoundIconBgHoverColor', name='footerRoundIconBgHoverColor')
           +colorOptions(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgHoverColor)
+    .form-group
+      label.col-sm-4.control-label(for='footerRoundIconBgGradient') Whole footer background gradient
+      .col-sm-8
+        +checkBox(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgGradient, 'footerRoundIconBgGradient')
+    .form-group
+      label.col-sm-4.control-label(for='footerRoundIconBgGradientDetails') Whole footer background gradient details
+      .col-sm-8
+        +input(ngWeb.styleSettings.footerSettings.footerColor.footerRoundIconBgGradientDetails, 'footerRoundIconBgGradientDetails')
 
     .form-group
       .col-sm-8

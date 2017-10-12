@@ -66,6 +66,7 @@ exports.postCopy = (req, res) => {
 
   function changePackageJson(data, ngWeb) {
     const packagejson = JSON.parse(data);
+    data = changeVar('name', packagejson.name, ngWeb.newWebName, data);
     data = changeVar('portNO', packagejson.nextGenConfig.portNO, ngWeb.portNO, data);
     data = changeVar('companyname', packagejson.nextGenConfig.companyname, ngWeb.newWebName, data);
     data = changeVar('stagingcompanyname', packagejson.nextGenConfig.stagingcompanyname, '', data);
